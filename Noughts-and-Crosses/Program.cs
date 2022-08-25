@@ -10,81 +10,55 @@ namespace Noughts_and_Crosses
     {
         static void Main(string[] args)
         {
-            PlayerMenace Menace1 = new PlayerMenace(new MENACE(), "Menace1");
-            PlayerMenace Menace2 = new PlayerMenace(new MENACE(), "Menace2");
+            PlayerMenace Menace1 = new PlayerMenace(new AIMenace(), "Menace1");
+            PlayerMenace Menace2 = new PlayerMenace(new AIMenace(), "Menace2");
+            PlayerAI Rando = new PlayerAI(new AIRandomMove(), "Rando");
+            PlayerAI Optimo = new PlayerAI(new AIOptimalMove(), "Optimo");
             Player Human1 = new PlayerHuman("Human1");
 
+            // Training against MENACE Start
             for (int i = 0; i < 10000; i++)
             {
                 Console.WriteLine("training");
                 Game g = new Game(Menace1, Menace2);
                 g.Train();
-
-                if (g.Winner == Menace1)
+                for (int j = 0; j < 5; j++)
                 {
-                    Menace1.Reward(g.History);
-                    Menace2.Punish(g.History);
-                }
-                else if (g.Winner == Menace2)
-                {
-                    Menace1.Punish(g.History);
-                    Menace2.Reward(g.History);
+                    Game rand1 = new Game(Menace1, Rando);
+                    Game rand2 = new Game(Rando, Menace2);
+                    rand1.Train();
+                    rand2.Train();
                 }
             }
+            // Training against MENACE End
 
             Menace1.LogDiagnostics();
             Menace2.LogDiagnostics();
             Console.WriteLine("");
             Console.WriteLine("");
 
-            while (true)
+            for (int i=0;i<10000;i++)
             {
                 Game h = new Game(Menace1, Human1);
-
                 h.PlayGame();
-                if (h.Winner == Menace1)
-                {
-                    Menace1.Reward(h.History);
-                }
-                else
-                {
-                    Menace1.Punish(h.History);
-                }
 
                 Menace1.LogDiagnostics();
+                Console.WriteLine("");
+                Console.Write("end of game ");
+                Console.Write(i+1);
                 Console.WriteLine();
             }
+
+
+            while (true)
+            {
+                Game h = new Game(Optimo, Human1);
+
+                h.PlayGame();
+                Console.WriteLine();
+            }
+
+
         }
-
-
-        //public static void PlayMENACE(MENACE menace)
-        //{
-        //    // Initialise new game object
-        //    Game myGame = new Game();
-
-        //    // Game Loop
-        //    while (true)
-        //    {
-        //        // Player 1 turn
-        //        Console.WriteLine("Player 1: ");
-        //        myGame.CurrentBoard = myGame.CurrentBoard.MakeMove(Game.GetUserInput(), 1);
-        //        myGame.CurrentBoard.PrintBoard();
-
-        //        // Check Game End
-        //        if (myGame.CurrentBoard.CheckWin() != 0 || myGame.CurrentBoard.BoardFull()) break;
-
-        //        // MENACE Turn 
-        //        Console.WriteLine("MENACE: ");
-
-        //        myGame.CurrentBoard = menace.PlayTurn(myGame.CurrentBoard);
-        //        myGame.CurrentBoard.PrintBoard();
-
-        //        // Check Game End
-        //        if (myGame.CurrentBoard.CheckWin() != 0 || myGame.CurrentBoard.BoardFull()) break;
-        //    }
-
-        //    myGame.CurrentBoard.PrintBoard();
-        //    myGame.AnnounceWinner();
-        //}
     }
 }

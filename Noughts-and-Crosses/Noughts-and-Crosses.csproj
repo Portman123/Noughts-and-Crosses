@@ -50,10 +50,18 @@
     <Compile Include="Game.cs" />
     <Compile Include="PlayerHuman.cs" />
     <Compile Include="Matchbox.cs" />
-    <Compile Include="MENACE.cs" />
+    <Compile Include="AIMenace.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerAI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomNumberGenerator.cs" />
+    <Compile Include="Reinforcement.cs" />
+    <Compile Include="ReinforcementIncremental.cs" />
+    <Compile Include="ReinforcementOdds.cs" />
+    <Compile Include="AI.cs" />
+    <Compile Include="AIOptimalMove.cs" />
+    <Compile Include="AIRandomMove.cs" />
     <Compile Include="Turn.cs" />
   </ItemGroup>
   <ItemGroup>

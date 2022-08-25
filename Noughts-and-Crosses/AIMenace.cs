@@ -7,29 +7,22 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class MENACE
+    internal class AIMenace : AI
     {
         // List of all Matchboxes
         public LinkedList<Matchbox> Matchboxes { get; set; }
+        public Reinforcement Reinforcer { get; set; }
+
 
         // Constructor
-        public MENACE()
+        public AIMenace()
         {
             Matchboxes = new LinkedList<Matchbox>();
+            Reinforcer = new ReinforcementIncremental();
         }
-
 
         public void AddMatchbox(BoardPosition newBoardPos)
         {
-            /*
-            // (pass board position) 
-            // check existence before adding
-            if (!CheckExistence(newBoardPos))
-            {
-                Matchboxes.AddLast(new Matchbox(newBoardPos));
-                // return true if the matchbox was sucessfully added
-            }*/
-
             Matchboxes.AddLast(new Matchbox(newBoardPos));
         }
 
@@ -77,8 +70,18 @@ namespace Noughts_and_Crosses
             return count;
         }
 
+        public int NumOfBeads()
+        {
+            int count = 0;
+            foreach (Matchbox box in Matchboxes)
+            {
+                count += box.GetNumberOfBeads();
+            }
+            return count;
+        }
+
         //This is where I'm starting to see I need a coordinate object
-        public int[] PlayTurn(BoardPosition boardPos, int turn)
+        public override int[] PlayTurn(BoardPosition boardPos, int turn)
         {
             // If Menace hasn't encountered this position before
             if (!CheckExistence(boardPos))
@@ -90,31 +93,47 @@ namespace Noughts_and_Crosses
 
             Matchbox box = MatchboxByBoardPos(boardPos);
 
-            return box.Shake(turn);
+            return box.Shake();
         }
 
-        public void Reward(GameHistory game, string nameCheck)
+        public void Reinforce(Game g, PlayerMenace p)
         {
-            foreach (Turn t in game.TurnHistory)
-            {
-                if (t.MoveMaker.Name == nameCheck)
-                {
-                    // This should be broken down into methods that are part of the corresponding classes
-                    MatchboxByBoardPos(t.Before).Reward(t.X,t.Y,t.TurnNumber); // This needs to be some function
-                }
-            }
+            Reinforcer.Reinforce(g, p);
         }
 
-        public void Punish(GameHistory game, string nameCheck)
-        {
-            foreach (Turn t in game.TurnHistory)
-            {
-                // This should be broken down into methods that are part of the corresponding classes
-                if (t.MoveMaker.Name == nameCheck)
-                {
-                    MatchboxByBoardPos(t.Before).Punish(t.X, t.Y,t.TurnNumber);
-                }
-            }
-        }
+        //public void Reward(GameHistory game, string nameCheck)
+        //{
+        //    foreach (Turn t in game.TurnHistory)
+        //    {
+        //        if (t.MoveMaker.Name == nameCheck)
+        //        {
+        //            // This should be broken down into methods that are part of the corresponding classes
+        //            MatchboxByBoardPos(t.Before).ScoreWin(t.X,t.Y,t.TurnNumber); // This needs to be some function
+        //        }
+        //    }
+        //}
+
+        //public void DrawReward(GameHistory game, string nameCheck)
+        //{
+        //    foreach (Turn t in game.TurnHistory)
+        //    {
+        //        if (t.MoveMaker.Name == nameCheck)
+        //        {
+        //            MatchboxByBoardPos(t.Before).ScoreDraw(t.X, t.Y,t.TurnNumber);
+        //        }
+        //    }
+        //}
+
+        //public void Punish(GameHistory game, string nameCheck)
+        //{
+        //    foreach (Turn t in game.TurnHistory)
+        //    {
+        //        // This should be broken down into methods that are part of the corresponding classes
+        //        if (t.MoveMaker.Name == nameCheck)
+        //        {
+        //            MatchboxByBoardPos(t.Before).ScoreLoss(t.X, t.Y,t.TurnNumber);
+        //        }
+        //    }
+        //}
     }
 }

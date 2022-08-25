@@ -32,5 +32,14 @@ namespace Noughts_and_Crosses
         {
             Count /= 2;
         }
+
+        public void Increment()
+        {
+            Count++;
+        }
+        public void Decrement()
+        {
+            Count--;
+        }
     }
 }

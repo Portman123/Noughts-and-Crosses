@@ -54,10 +54,13 @@ namespace Noughts_and_Crosses
             }
             CurrentBoard.PrintBoard();
             AnnounceWinner();
-
-            // This could probably be nicer
             Finished = true;
             DetermineWinner();
+
+            // Apply Reinforcements
+            P1.Reinforce(this);
+            P2.Reinforce(this);
+
         }
 
         public void Train()
@@ -90,23 +93,51 @@ namespace Noughts_and_Crosses
             }
             Finished = true;
             DetermineWinner();
+            //AnnounceWinner();
+
+            // Apply Reinforcements
+            P1.Reinforce(this);
+            P2.Reinforce(this);
         }
 
         public void AnnounceWinner()
         {
             // Write winner to console
-            if (CurrentBoard.CheckWin() == 1) Console.WriteLine("Player 1 has won");
-            else if (CurrentBoard.CheckWin() == -1) Console.WriteLine("Player 2 has won");
-            else if (CurrentBoard.CheckWin() == 0) Console.WriteLine("Nobody has won");
+            if (CurrentBoard.CheckWin() == 1)
+            {
+                Console.WriteLine("");
+                Console.Write(P1.Name);
+                Console.Write(" wins!");
+            }
+            else if (CurrentBoard.CheckWin() == -1)
+            {
+                Console.WriteLine("");
+                Console.Write(P2.Name);
+                Console.Write(" wins!");
+            }
+            else if (CurrentBoard.CheckWin() == 0) Console.WriteLine("Draw!");
             else Console.WriteLine("Something has gone wrong...");
         }
 
         public void DetermineWinner()
         {
             // Write winner to console
-            if (CurrentBoard.CheckWin() == 1) Winner = P1;
-            else if (CurrentBoard.CheckWin() == -1) Winner = P2;
-            else if (CurrentBoard.CheckWin() == 0) Winner = null;
+            if (CurrentBoard.CheckWin() == 1)
+            {
+                Winner = P1;
+                P1.Wins++; P2.Losses++;
+            }
+            else if (CurrentBoard.CheckWin() == -1)
+            {
+                Winner = P2;
+                P2.Wins++; P1.Losses++;
+            }
+            else if (CurrentBoard.CheckWin() == 0)
+            {
+                Winner = null;
+                P1.Draws++;
+                P2.Draws++;
+            }
             else Console.WriteLine("Something has gone wrong...");
         }
     }

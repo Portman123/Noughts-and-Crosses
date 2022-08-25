@@ -13,8 +13,6 @@ namespace Noughts_and_Crosses
 
         public LinkedList<Bead> Beads { get; }
 
-        public int NumOfBeads { get; set; }
-
         // Constructors
         public Matchbox(BoardPosition boardPosition)
         {
@@ -28,7 +26,6 @@ namespace Noughts_and_Crosses
                     if (BoardPosition.Coords[i, j] == 0)
                     {
                         Beads.AddLast(new Bead(i, j));
-                        NumOfBeads++;   // Since this is a new matchbox there will be one instance of each bead
                     }
                 }
             }
@@ -43,68 +40,48 @@ namespace Noughts_and_Crosses
             return null;
         }
 
-        //This is where I'm starting to see I need a coordinate object
-        public int[] Shake(int turn)
+        public int GetNumberOfBeads()
         {
-            // !!!!START TEMPORARY!!!!
-            NumOfBeads = 0;
+            int count = 0;
             foreach (Bead b in Beads)
             {
-                NumOfBeads += b.Count;
+                count += b.Count;
             }
-            // !!!!END TEMPORARY!!!!
+            return count;
+        }
 
+        //This is where I'm starting to see I need a coordinate object
+        public int[] Shake()
+        {
             // Generate random number
-            Random rnd = new Random();
-            int randomNumber = rnd.Next(1, NumOfBeads);
+            int randomNumber = RandomNumberGenerator.Next(GetNumberOfBeads());
 
             // Determine which move the random number points to
             int count = 0;
+
             foreach (Bead move in Beads)
             {
                 count += move.Count;
-                if (randomNumber <= count) return new int[] {move.X, move.Y};
+
+                if (randomNumber < count) return new int[] {move.X, move.Y};
             }
+
             throw new Exception("Something went wrong while MENACE was picking it's next move.");
         }
 
-        public void Reward(int x, int y, int amount)
-        {
-            foreach (Bead b in Beads)
-            {
-                if (b.X == x && b.Y == y)
-                {
-                    for (int i = 0; i < amount; i++)
-                    {
-                        b.Double();
-                    }
-                }
-            }
-        }
+        //public void ScoreWin(int x, int y, int turnNumber)
+        //{
+        //    Reinforcer.WinReinforcement(GetBead(x, y), turnNumber);
+        //}
 
-        public void Punish(int x, int y, int amount)
-        {
-            for (int i = 0; i < amount; i++)
-            {
-                // Messy code needs cleaning up
-                bool safe = true;
-                foreach (Bead b in Beads)
-                {
-                    if (b.Count >= 238609294) safe = false;
-                }
+        //public void ScoreDraw(int x, int y, int turnNumber)
+        //{
+        //    Reinforcer.DrawReinforcement(GetBead(x, y), turnNumber);
+        //}
 
-                if (safe)
-                {
-                    foreach (Bead b in Beads)
-                    {
-                        b.Double();
-                    }
-                    foreach (Bead b in Beads)
-                    {
-                        if (b.X == x && b.Y == y) b.Half();
-                    }
-                }
-            }
-        }
+        //public void ScoreLoss(int x, int y, int turnNumber)
+        //{
+        //    Reinforcer.LossReinforcement(GetBead(x, y), turnNumber);
+        //}
     }
 }

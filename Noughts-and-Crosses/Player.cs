@@ -9,15 +9,23 @@ namespace Noughts_and_Crosses
     abstract class Player
     {
         public string Name { get; }
+        public int Wins { get; set; }
+        public int Draws { get; set; }
+        public int Losses { get; set; }
 
         public Player(string name)
         {
             Name = name;
+            Wins = 0;
+            Draws = 0;
+            Losses = 0;
         }
 
-        public abstract Turn PlayTurn(BoardPosition CurrentBoard, int turn, int turnNumber);
 
+        public abstract Turn PlayTurn(BoardPosition CurrentBoard, int turn, int turnNumber);
         public abstract void LogDiagnostics();
+        public abstract void Reinforce(Game g);
+
 
         protected void LogDiagnosticsBase()
         {
@@ -32,21 +40,6 @@ namespace Noughts_and_Crosses
             Console.Write(Name);
             Console.Write("'s Turn: ");
             Console.WriteLine("");
-        }
-
-        public static int[] GetUserInput()
-        {
-            String UserInput = Console.ReadLine();
-            if (UserInput == "1") return new int[] { 0, 0 };
-            if (UserInput == "2") return new int[] { 0, 1 };
-            if (UserInput == "3") return new int[] { 0, 2 };
-            if (UserInput == "4") return new int[] { 1, 0 };
-            if (UserInput == "5") return new int[] { 1, 1 };
-            if (UserInput == "6") return new int[] { 1, 2 };
-            if (UserInput == "7") return new int[] { 2, 0 };
-            if (UserInput == "8") return new int[] { 2, 1 };
-            if (UserInput == "9") return new int[] { 2, 2 };
-            return null;
         }
     }
 }
