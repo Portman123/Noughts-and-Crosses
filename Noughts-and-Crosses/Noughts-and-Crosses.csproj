@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bead.cs" />
+    <Compile Include="Coordinate.cs" />
     <Compile Include="GameHistory.cs" />
     <Compile Include="PlayerMenace.cs" />
     <Compile Include="BoardPosition.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="AIOptimalMove.cs" />
     <Compile Include="AIRandomMove.cs" />
     <Compile Include="Turn.cs" />
+    <Compile Include="WinningPosition.cs" />
+    <Compile Include="WinningPositionIntersect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -27,7 +27,14 @@ namespace Noughts_and_Crosses
         public override void LogDiagnostics()
         {
             base.LogDiagnosticsBase();
-            Console.WriteLine("Working perfectly :)");
+            Console.WriteLine("");
+            Console.Write("Wins/Draws/Losses: ");
+            Console.Write(Wins);
+            Console.Write(" / ");
+            Console.Write(Draws);
+            Console.Write(" / ");
+            Console.Write(Losses);
+            Console.WriteLine("");
         }
 
         public override void Reinforce(Game g)

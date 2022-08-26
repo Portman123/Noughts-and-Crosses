@@ -58,6 +58,12 @@ namespace Noughts_and_Crosses
             return new BoardPosition(newposition);
         }
 
+        // Return the occupier at a given coordinate
+        public int Occupant (Coordinate location)
+        {
+            return Coords[location.X, location.Y];
+        }
+
         // There are 8 winning positions that need to be checked
         public int CheckWin()
         {

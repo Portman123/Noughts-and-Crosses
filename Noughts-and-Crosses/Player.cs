@@ -32,6 +32,9 @@ namespace Noughts_and_Crosses
             Console.WriteLine("");
             Console.WriteLine("-------------------------");
             Console.WriteLine("");
+            Console.Write(Name);
+            Console.Write(" DIAGNOSTICS");
+            Console.WriteLine("");
         }
 
         protected void PlayTurnBase(BoardPosition CurrentBoard, int turn)

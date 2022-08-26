@@ -44,6 +44,7 @@ namespace Noughts_and_Crosses
             Console.Write(Draws);
             Console.Write(" / ");
             Console.Write(Losses);
+            Console.WriteLine("");
             //Console.ReadKey();
         }
 
