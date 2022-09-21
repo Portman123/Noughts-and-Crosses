@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class ReinforcementOdds : Reinforcement
+    public class ReinforcementOdds : IReinforcement
     {
-        public override void Reinforce(Game g, PlayerMenace menace)
+        public void Reinforce(Game g, PlayerMenace menace)
         {
             // for each turn in the game's history where menace played a turn
             foreach (Turn t in g.History.TurnHistory)
@@ -30,7 +30,7 @@ namespace Noughts_and_Crosses
             }
         }
 
-        public override void WinReinforcement(Bead b, int turnNumber)
+        public void WinReinforcement(Bead b, int turnNumber)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Noughts_and_Crosses
             }
         }
 
-        public override void DrawReinforcement(Bead b, int turnNumber)
+        public void DrawReinforcement(Bead b, int turnNumber)
         {
             for (int i = 0; i < turnNumber; i++)
             {
@@ -53,7 +53,7 @@ namespace Noughts_and_Crosses
             }
         }
 
-        public override void LossReinforcement(Bead b, int turnNumber)
+        public void LossReinforcement(Bead b, int turnNumber)
         {
             for (int i = 0; i < turnNumber; i++)
             {

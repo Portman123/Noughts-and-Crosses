@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class Bead
+    public class Bead : Entity
     {
-        public int X { get; }
-        public int Y { get; }
+        public int X { get; set;  }
+        public int Y { get; set;  }
         public int Count { get; set; }
 
         public Bead(int x, int y)

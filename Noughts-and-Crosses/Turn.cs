@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class Turn
+    public class Turn
     {
         public Player MoveMaker { get; }
         public BoardPosition Before { get; }

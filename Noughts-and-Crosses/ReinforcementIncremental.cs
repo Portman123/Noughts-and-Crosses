@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class ReinforcementIncremental : Reinforcement
+    public class ReinforcementIncremental : IReinforcement
     {
-        public override void Reinforce(Game g, PlayerMenace menace)
+        public void Reinforce(Game g, PlayerMenace menace)
         {
             // Ensure menace played in the game given
             if (g.P1 != menace && g.P2 != menace) throw new Exception("Reinforcement Error: it would seem MENACE did not play in the game given");
@@ -42,17 +42,17 @@ namespace Noughts_and_Crosses
             }
         }
 
-        public override void WinReinforcement(Bead b, int turnNumber)
+        public void WinReinforcement(Bead b, int turnNumber)
         {
             b.Count += turnNumber*3;
         }
 
-        public override void DrawReinforcement(Bead b, int turnNumber)
+        public void DrawReinforcement(Bead b, int turnNumber)
         {
             b.Count += turnNumber;
         }
 
-        public override void LossReinforcement(Bead b, int turnNumber)
+        public void LossReinforcement(Bead b, int turnNumber)
         {
             b.Count = Math.Max(1, b.Count - turnNumber);
         }

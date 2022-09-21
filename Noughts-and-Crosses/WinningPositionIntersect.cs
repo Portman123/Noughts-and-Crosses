@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class WinningPositionIntersect
+    public class WinningPositionIntersect
     {
         public WinningPosition WinPos1 { get; set; }
         public WinningPosition WinPos2 { get; set; }

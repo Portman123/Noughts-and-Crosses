@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class GameHistory
+    public class GameHistory
     {
         public LinkedList<Turn> TurnHistory { get; }
         public Player P1 { get; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class AIOptimalMove : AI
+    public class AIOptimalMove : AI
     {
         // this is a bit messy but techinically this could be adapted to play on more than just a 3x3 grid? not sure but it works for now
         public LinkedList<WinningPosition> WinningPositions = new LinkedList<WinningPosition> ();
@@ -55,23 +55,65 @@ namespace Noughts_and_Crosses
 
         public override int[] PlayTurn(BoardPosition boardPos, int turn)
         {
-            Coordinate winMove = Win(boardPos, turn);
-            Coordinate blockMove = Block(boardPos, turn);
-            Coordinate forkMove = Fork(boardPos, turn);
-            Coordinate blockForkMove = BlockFork(boardPos, turn);
-            Coordinate centreMove = PlayCentre(boardPos);
-            Coordinate oppositeCornerMove = PlayOppositeCorner(boardPos, turn);
-            Coordinate emptyCornerMove = PlayEmptyCorner(boardPos);
-            Coordinate emptySideMove = PlayEmptySide(boardPos);
+            // Try to win
+            LinkedList<Coordinate> winMoves = Win(boardPos, turn);
+            if (winMoves != null)
+            {
+                Coordinate selectedCoord = winMoves.ElementAt(RandomNumberGenerator.Next(winMoves.Count));
+                return new int[] { selectedCoord.X, selectedCoord.Y };
+            }
 
-            if (winMove != null) return new int[] { winMove.X, winMove.Y };// Try to win
-            if (blockMove != null) return new int[] { blockMove.X, blockMove.Y };// Try to block
-            if (forkMove != null) return new int[] { forkMove.X, forkMove.Y }; // Try to fork
-            if (blockForkMove != null) return new int[] { blockForkMove.X, blockForkMove.Y }; // Try to block a fork
+            // Try to block
+            LinkedList<Coordinate> blockMoves = Block(boardPos, turn);
+            if (blockMoves != null)
+            {
+                Coordinate selectedCoord = blockMoves.ElementAt(RandomNumberGenerator.Next(blockMoves.Count));
+                return new int[] { selectedCoord.X, selectedCoord.Y };
+            }
+
+            // Try to fork
+            LinkedList<Coordinate> forkMoves = Fork(boardPos, turn);
+            if (forkMoves != null)
+            {
+                Coordinate selectedCoord = forkMoves.ElementAt(RandomNumberGenerator.Next(forkMoves.Count));
+                return new int[] { selectedCoord.X, selectedCoord.Y };
+            }
+
+            // Try to block a fork
+            LinkedList<Coordinate> blockForkMoves = BlockFork(boardPos, turn);
+            if (blockForkMoves != null)
+            {
+                Coordinate selectedCoord = blockForkMoves.ElementAt(RandomNumberGenerator.Next(blockForkMoves.Count));
+                return new int[] { selectedCoord.X, selectedCoord.Y };
+            }
+
+            // Try Centre
+            Coordinate centreMove = PlayCentre(boardPos);
             if (centreMove != null) return new int[] { centreMove.X, centreMove.Y };
-            if (oppositeCornerMove != null) return new int[] {oppositeCornerMove.X, oppositeCornerMove.Y };
-            if (emptyCornerMove != null) return new int[] { emptyCornerMove.X, emptyCornerMove.Y };
-            if (emptySideMove != null) return new int[] { emptySideMove.X, emptySideMove.Y };
+
+            // Try Opposite Corner
+            LinkedList<Coordinate> oppositeCornerMoves = PlayOppositeCorner(boardPos, turn);
+            if (oppositeCornerMoves != null)
+            {
+                Coordinate selectedCoord = oppositeCornerMoves.ElementAt(RandomNumberGenerator.Next(oppositeCornerMoves.Count));
+                return new int[] { selectedCoord.X, selectedCoord.Y };
+            }
+
+            // Try Empty Corner
+            LinkedList<Coordinate> emptyCornerMoves = PlayEmptyCorner(boardPos);
+            if (emptyCornerMoves != null)
+            {
+                Coordinate selectedCoord = emptyCornerMoves.ElementAt(RandomNumberGenerator.Next(emptyCornerMoves.Count));
+                return new int[] { selectedCoord.X, selectedCoord.Y };
+            }
+
+            // Try Opposite Corner
+            LinkedList<Coordinate> emptySideMoves = PlayEmptySide(boardPos);
+            if (emptySideMoves != null)
+            {
+                Coordinate selectedCoord = emptySideMoves.ElementAt(RandomNumberGenerator.Next(emptySideMoves.Count));
+                return new int[] { selectedCoord.X, selectedCoord.Y };
+            }
 
             // if can't play good move return random move from those available
             throw new Exception("Optimo couldn't figure out a good move to play so he gave up :(");
@@ -84,8 +126,10 @@ namespace Noughts_and_Crosses
         // WIN
         // If there is o row, column, or diagonal with two of my pieces and a blank space,
         //      Then play the blank space (thus winning the game). 
-        public Coordinate Win(BoardPosition boardPos, int player)
+        public LinkedList<Coordinate> Win(BoardPosition boardPos, int player)
         {
+            LinkedList<Coordinate> possibleMoves = new LinkedList<Coordinate>();
+
             // Determine the winning coordinate
             foreach (var winPos in WinningPositions)
             {
@@ -97,8 +141,9 @@ namespace Noughts_and_Crosses
                     if (boardPos.Occupant(winPos.Coordinates[coord]) == player) progress++;
                     else if (boardPos.Occupant(winPos.Coordinates[coord]) == 0) winCoord = winPos.Coordinates[coord]; // take note of which coordinate was available
                 }
-                if (progress == 2 && winCoord != null) return winCoord;
+                if (progress == 2 && winCoord != null) possibleMoves.AddLast(winCoord);
             }
+            if (possibleMoves.Count > 0) return possibleMoves;
             return null;
         }
 
@@ -106,8 +151,10 @@ namespace Noughts_and_Crosses
         // BLOCK
         // If there Is a row, column, or diagonal with two of my opponent’s pieces and a blank space,
         //      Then play the blank space (thus blocking a potential win for my opponent).
-        public Coordinate Block(BoardPosition boardPos, int player)
+        public LinkedList<Coordinate> Block(BoardPosition boardPos, int player)
         {
+            LinkedList<Coordinate> possibleMoves = new LinkedList<Coordinate>();
+
             // Determine opponents winning coordinate
             foreach (var winPos in WinningPositions)
             {
@@ -119,8 +166,9 @@ namespace Noughts_and_Crosses
                     if (boardPos.Occupant(winPos.Coordinates[coord]) == player*-1) progress++;
                     else if (boardPos.Occupant(winPos.Coordinates[coord]) == 0) winCoord = winPos.Coordinates[coord]; // take note of which coordinate was available
                 }
-                if (progress == 2 && winCoord != null) return winCoord;
+                if (progress == 2 && winCoord != null) possibleMoves.AddLast(winCoord);
             }
+            if (possibleMoves.Count > 0) return possibleMoves;
             return null;
         }
 
@@ -129,8 +177,10 @@ namespace Noughts_and_Crosses
         // If there are two intersecting rows, columns, or diagonals with one of my pieces and two blanks, and
         //  If the intersecting space Is empty,
         //      Then move to the intersecting space (thus creating two ways to win on my next turn).
-        public Coordinate Fork(BoardPosition boardPos, int player)
+        public LinkedList<Coordinate> Fork(BoardPosition boardPos, int player)
         {
+            LinkedList<Coordinate> possibleMoves = new LinkedList<Coordinate>();
+
             foreach (var Intersect in Intersections)
             {
                 // check if pos1 meets criteria
@@ -154,9 +204,11 @@ namespace Noughts_and_Crosses
                 // if criteria met, and intersecting coord empty return it 
                 if (empty1 == 2 && filled1 == 1 && empty2 == 2 && filled2 == 1 && boardPos.Occupant(Intersect.IntersectCoord) == 0)
                 {
-                    return (Intersect.IntersectCoord);
+                    possibleMoves.AddLast(Intersect.IntersectCoord);
                 }
             }
+
+            if (possibleMoves.Count > 0) return possibleMoves;
             return null;
         }
 
@@ -168,7 +220,7 @@ namespace Noughts_and_Crosses
         //          THEN move to the location. 
         //      ELSE
         //          Move to the Intersection space (thus occupying the location that my opponent could use to fork). 
-        public Coordinate BlockFork(BoardPosition boardPos, int player)
+        public LinkedList<Coordinate> BlockFork(BoardPosition boardPos, int player)
         {
             LinkedList<Coordinate> intersectingCoords = new LinkedList<Coordinate>();
             foreach (var Intersect in Intersections)
@@ -200,15 +252,17 @@ namespace Noughts_and_Crosses
             }
 
             // try to get 2 in a row
-            Coordinate move = Make2InRow(boardPos, player, intersectingCoords);
+            LinkedList<Coordinate> move = Make2InRow(boardPos, player, intersectingCoords);
             if (move != null) return move; // HORRIBLE (definitely needs rewriting)
-            else if (intersectingCoords.Count > 0) return intersectingCoords.First(); // Otherwise block opponents fork
+            else if (intersectingCoords.Count > 0) return intersectingCoords; // Otherwise block opponents fork
 
             return null;
         }
 
-        public Coordinate Make2InRow(BoardPosition boardPos, int player, LinkedList<Coordinate> intersectingCoords)
+        public LinkedList<Coordinate> Make2InRow(BoardPosition boardPos, int player, LinkedList<Coordinate> intersectingCoords)
         {
+            LinkedList<Coordinate> possibleMoves = new LinkedList<Coordinate>();
+
             if (intersectingCoords == null) return null;
             // for each winning position check...
             foreach (WinningPosition position in WinningPositions)
@@ -226,9 +280,10 @@ namespace Noughts_and_Crosses
                         if (boardPos.Occupant(coord) == 0) empty++;
                     }
                     // if conditions are right and a blocking cord also making 2 in a row is found then return it.
-                    if (filled == 1 && empty == 2 && move != null) return interCord;
+                    if (filled == 1 && empty == 2 && move != null) possibleMoves.AddLast(interCord);
                 }
             }
+            if (possibleMoves.Count > 0) return possibleMoves;
             return null;
         }
 
@@ -244,37 +299,46 @@ namespace Noughts_and_Crosses
         // PLAY OPPOSITE CORNER
         // If my opponent is in a corner, and If the opposite corner is empty,
         //      THEN play the opposite corner.
-        public Coordinate PlayOppositeCorner(BoardPosition boardPos, int player)
+        public LinkedList<Coordinate> PlayOppositeCorner(BoardPosition boardPos, int player)
         {
+            LinkedList<Coordinate> possibleMoves = new LinkedList<Coordinate>();
+
             foreach ((Coordinate,Coordinate) cornerPair in Corners)
             {
                 if (boardPos.Occupant(cornerPair.Item1) == player*-1 && boardPos.Occupant(cornerPair.Item2)==0)
                 {
-                    return cornerPair.Item2;
+                    possibleMoves.AddLast( cornerPair.Item2);
                 }
             }
+            if (possibleMoves.Count > 0) return possibleMoves;
             return null;
         }
 
         // PLAY EMPTY CORNER
         // If there is an empty corner, Then move to an empty corner.
-        public Coordinate PlayEmptyCorner(BoardPosition boardPos)
+        public LinkedList<Coordinate> PlayEmptyCorner(BoardPosition boardPos)
         {
+            LinkedList<Coordinate> possibleMoves = new LinkedList<Coordinate>();
+
             foreach ((Coordinate, Coordinate) cornerPair in Corners)
             {
-                if (boardPos.Occupant(cornerPair.Item1) == 0) return cornerPair.Item1;
+                if (boardPos.Occupant(cornerPair.Item1) == 0) possibleMoves.AddLast(cornerPair.Item1);
             }
+            if (possibleMoves.Count > 0) return possibleMoves;
             return null;
         }
 
         // PLAY EMPTY SIDE
         // If there Is an empty side, Then move to an empty side.
-        public Coordinate PlayEmptySide(BoardPosition boardPos)
+        public LinkedList<Coordinate> PlayEmptySide(BoardPosition boardPos)
         {
+            LinkedList<Coordinate> possibleMoves = new LinkedList<Coordinate>();
+
             foreach (Coordinate side in Sides)
             {
-                if (boardPos.Occupant(side) == 0) return side;
+                if (boardPos.Occupant(side) == 0) possibleMoves.AddLast(side);
             }
+            if (possibleMoves.Count > 0) return possibleMoves;
             return null;
         }
 

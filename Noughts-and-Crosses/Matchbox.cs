@@ -6,14 +6,22 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class Matchbox
+    public class Matchbox : Entity
     {
         // Matchbox ID
-        public BoardPosition BoardPosition { get; }
+        public BoardPosition BoardPosition { get; set; }
 
-        public LinkedList<Bead> Beads { get; }
+        public LinkedList<Bead> Beads { get; set; }
 
         // Constructors
+        public Matchbox() { }
+
+        public Matchbox(BoardPosition boardPosition, LinkedList<Bead> beads)
+        {
+            BoardPosition = boardPosition;
+            Beads = beads;
+        }
+
         public Matchbox(BoardPosition boardPosition)
         {
             BoardPosition = boardPosition;

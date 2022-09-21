@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class PlayerAI : Player
+    public class PlayerAI : Player
     {
         public PlayerAI(AI engine, string name) : base(name)
         {

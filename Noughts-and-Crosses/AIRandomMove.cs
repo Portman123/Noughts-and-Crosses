@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class AIRandomMove : AI
+    public class AIRandomMove : AI
     {
         public override int[] PlayTurn(BoardPosition boardPos, int turn)
         {

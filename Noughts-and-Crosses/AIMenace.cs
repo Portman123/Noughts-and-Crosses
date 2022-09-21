@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class AIMenace : AI
+    public class AIMenace : AI
     {
         // List of all Matchboxes
         public LinkedList<Matchbox> Matchboxes { get; set; }
-        public Reinforcement Reinforcer { get; set; }
 
+        [NotMapped]
+        public IReinforcement Reinforcer { get; set; }
 
         // Constructor
         public AIMenace()

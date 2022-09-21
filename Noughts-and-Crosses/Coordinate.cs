@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Noughts_and_Crosses
 {
     // One day I need to sit down and make this the main system 
-    internal class Coordinate : IEquatable<Coordinate>
+    public class Coordinate : IEquatable<Coordinate>
     {
         public int X { get; }
         public int Y { get; }

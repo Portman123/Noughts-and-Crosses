@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Noughts_and_Crosses
 {
-    internal class PlayerMenace : PlayerAI
+    public class PlayerMenace : PlayerAI
     {
         public PlayerMenace(AIMenace engine, string name) : base(engine, name)
         {

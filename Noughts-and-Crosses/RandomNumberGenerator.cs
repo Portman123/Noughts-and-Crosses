@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal static class RandomNumberGenerator
+    public static class RandomNumberGenerator
     {
         private static Object _randLock = new object();
 

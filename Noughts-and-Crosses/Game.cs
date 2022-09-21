@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class Game
+    public class Game
     {
         public BoardPosition CurrentBoard { get; set; }
         public GameHistory History { get; }

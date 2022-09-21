@@ -2,7 +2,7 @@
 
 namespace Noughts_and_Crosses
 {
-    internal class PlayerHuman : Player
+    public class PlayerHuman : Player
     {
         public PlayerHuman(string name) : base(name)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    abstract class Player
+    public abstract class Player
     {
         public string Name { get; }
         public int Wins { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Noughts_and_Crosses
 {
-    internal class WinningPosition
+    public class WinningPosition
     {
         public Coordinate[] Coordinates { get; set; }
 
